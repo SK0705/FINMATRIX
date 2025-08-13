@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>FinMatrix</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
   <header class="topbar">
     <h1>Trading & Profit & Loss Generator</h1>
     <p class="subtitle">Upload your Trial Balance, review classifications, and generate statements.</p>
-    
   </header>
 
   <main class="container">
@@ -75,16 +76,11 @@
           <span>Currency</span>
           <input id="currency" type="text" value="₹" />
         </label>
-      <div class="input-section">
-    <input type="file" id="csvFile" accept=".csv">
-    <label>Closing Stock: <input type="number" id="closingStock"></label>
-    <button id="generate">Generate Statements</button>
-    <button id="downloadPdf">Download PDF</button>
-</div>
-
+        <button id="generate" class="primary">Generate Statements</button>
+        <button id="downloadPdf">Download PDF</button>
+      </div>
       <p class="hint">
-        Auto-classification uses smart keyword rules (e.g., “Sales”, “Purchases Returns”, “Wages”, “Carriage Inwards”, “Rent”, “Commission Received”, “Discount Received”, etc.).
-        You can override in the table before generating.
+        Auto-classification uses smart keyword rules. You can override in the table before generating.
       </p>
     </section>
 
@@ -106,7 +102,6 @@
       <div id="summary" class="summary"></div>
     </section>
   </main>
-  <a href="flowchart.html">Flowchart </a>
 
   <footer class="footer">
     <small>Built for speed. All calculations run in your browser.</small>
@@ -115,10 +110,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
