@@ -1,3 +1,105 @@
+:root {
+  --bg: #0b1020;
+  --card: #121833;
+  --muted: #8aa0ff;
+  --text: #ecf0ff;
+  --ok: #47d18c;
+  --warn: #ffd166;
+  --bad: #ff6b6b;
+  --line: #2a3158;
+}
+
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; background: var(--bg); color: var(--text); font: 15px/1.5 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+
+.topbar { padding: 24px 16px; text-align: center; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #0f1633, #0b1020); }
+.topbar h1 { margin: 0 0 6px; font-size: 26px; letter-spacing: .3px; }
+.subtitle { margin: 0; color: #c6d0ff; opacity: .85; }
+
+.container { max-width: 1200px; margin: 20px auto; padding: 0 14px; }
+
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin-bottom: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.sep { opacity: .6; }
+.hint { margin: 8px 0 0; color: #c6d0ff; opacity: .8; }
+
+.file-label { position: relative; display: inline-block; }
+.file-label input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; }
+.file-label span { display:inline-block; background:#1b2450; border:1px dashed #4250a8; color:var(--muted); padding:10px 14px; border-radius:10px; cursor:pointer; }
+
+button { background:#1e2655; border:1px solid #3a4596; color:#dee5ff; padding:10px 12px; border-radius:10px; cursor:pointer; }
+button:hover { filter:brightness(1.1); }
+button.primary { background:#2c38a6; border-color:#5d6bff; }
+button.ghost { background:transparent; border-color:#3a4596; }
+button.outline { background:#0f1538; border-color:#3a4596; }
+button.danger { background:#3a0f20; border-color:#8c354f; }
+
+.table-wrap { overflow:auto; border-radius: 12px; border: 1px solid var(--line); margin-top: 10px; }
+table { width:100%; border-collapse: collapse; }
+thead th { position: sticky; top:0; background:#141b3d; z-index:1; }
+th, td { padding:10px 8px; border-bottom:1px solid var(--line); }
+td.right, th.right { text-align: right; }
+.bold { font-weight: 700; }
+input[type=text], input[type=number], select {
+  background:#0f1538; border:1px solid #3a4596; color:#e6e9ff; padding:8px 10px; border-radius:8px; width:100%;
+}
+
+td.actions { text-align:center; }
+.actions button { padding:6px 10px; }
+
+.controls { display:flex; gap:10px; align-items:center; flex-wrap: wrap; }
+.controls label { display:flex; gap:8px; align-items:center; background:#0f1538; border:1px solid #3a4596; padding:8px 10px; border-radius:10px; }
+.controls .grow { flex:1 1 auto; }
+.controls input[type=text], .controls input[type=number] { width: 160px; }
+
+.two-col-statement { display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.statement-col { border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+.statement-col h3 { margin:0; background:#141b3d; padding:10px; border-bottom: 1px solid var(--line); }
+.statement-col table { width:100%; border-collapse: collapse; }
+.statement-col td, .statement-col th { padding:8px 8px; border-bottom:1px dashed #2a3158; }
+.statement-col tfoot td { border-top:1px solid var(--line); font-weight:700; }
+
+.footer { text-align:center; padding: 20px; color:#97a0d9; }
+
+.bad { color: var(--bad); }
+.ok { color: var(--ok); }
+.warn { color: var(--warn); }
+
+.summary { display: grid; gap: 6px; }
+.tag { display:inline-block; padding:4px 8px; border-radius:999px; background:#0f1538; border:1px solid #3a4596; color:#cbd4ff; }
+/* Add these styles to your existing CSS */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn.primary {
+  background-color: #4361ee;
+  color: white;
+}
+
+.btn.primary:hover {
+  background-color: #3a56d4;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Style for the link version in footer */
+.footer a.btn {
+  text-decoration: none;
+  color: white;
+  padding: 8px 16px;
+}
 /* Flowchart Button Styles */
 .flowchart-btn {
     background: linear-gradient(135deg, #7209b7 0%, #3a0ca3 100%);
