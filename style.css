@@ -70,3 +70,33 @@ td.actions { text-align:center; }
 
 .summary { display: grid; gap: 6px; }
 .tag { display:inline-block; padding:4px 8px; border-radius:999px; background:#0f1538; border:1px solid #3a4596; color:#cbd4ff; }
+/* Add these styles to your existing CSS */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn.primary {
+  background-color: #4361ee;
+  color: white;
+}
+
+.btn.primary:hover {
+  background-color: #3a56d4;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Style for the link version in footer */
+.footer a.btn {
+  text-decoration: none;
+  color: white;
+  padding: 8px 16px;
+}
