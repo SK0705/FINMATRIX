@@ -1,108 +1,98 @@
-const trialBody = document.getElementById("trialBody");
-const tradingTable = document.getElementById("tradingTable");
-const pnlTable = document.getElementById("pnlTable");
-const closingStockInput = document.getElementById("closingStock");
+document.getElementById('csvFile').addEventListener('change', handleFile);
+document.getElementById('generate').addEventListener('click', generateStatements);
 
-// Parse CSV and auto-fill table
-document.getElementById("csvFile").addEventListener("change", function(e) {
-    const file = e.target.files[0];
+let trialData = [];
+
+function handleFile(event) {
+    const file = event.target.files[0];
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = function(evt) {
-        const lines = evt.target.result.split(/\r?\n/).filter(Boolean);
-        trialBody.innerHTML = ""; // clear table
+    reader.onload = function(e) {
+        const lines = e.target.result.split(/\r?\n/);
+        trialData = [];
+        document.getElementById('trialBody').innerHTML = "";
 
-        lines.forEach((line, index) => {
-            if (index === 0) return; // skip header row
-            const [ledger, debit, credit] = line.split(",").map(s => s.trim());
-
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${ledger}</td>
-                <td>${debit || ""}</td>
-                <td>${credit || ""}</td>
-            `;
-            trialBody.appendChild(row);
+        lines.slice(1).forEach(line => {
+            if (line.trim() === "") return;
+            const [ledger, debit, credit] = line.split(",");
+            trialData.push({
+                ledger: ledger.trim(),
+                debit: parseFloat(debit) || 0,
+                credit: parseFloat(credit) || 0
+            });
         });
 
-        generateStatements(); // auto-generate
+        fillTrialTable();
     };
     reader.readAsText(file);
-});
+}
 
-// Auto-regenerate if closing stock changes
-closingStockInput.addEventListener("input", generateStatements);
+function fillTrialTable() {
+    const tbody = document.getElementById('trialBody');
+    tbody.innerHTML = "";
+    trialData.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${row.ledger}</td>
+            <td>${row.debit || ""}</td>
+            <td>${row.credit || ""}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
 
-// Generate Trading & P&L
 function generateStatements() {
-    let tradingDebit = 0, tradingCredit = 0;
-    let pnlDebit = 0, pnlCredit = 0;
-    let tradingRows = "", pnlRows = "";
+    const closingStock = parseFloat(document.getElementById('closingStock').value) || 0;
+    
+    const tradingItems = [];
+    const pnlItems = [];
 
-    const closingStock = parseFloat(closingStockInput.value) || 0;
+    let totalDebitTrading = 0;
+    let totalCreditTrading = closingStock;
+    let totalDebitPnL = 0;
+    let totalCreditPnL = 0;
 
-    [...trialBody.rows].forEach(row => {
-        const ledger = row.cells[0].innerText;
-        const debit = parseFloat(row.cells[1].innerText) || 0;
-        const credit = parseFloat(row.cells[2].innerText) || 0;
-
-        // Classify
-        if (["Opening Stock", "Purchases", "Purchase Returns", "Sales", "Sales Returns", "Wages", "Carriage Inwards"].includes(ledger)) {
-            tradingRows += `<tr><td>${ledger}</td><td>${debit}</td><td>${credit}</td></tr>`;
-            tradingDebit += debit;
-            tradingCredit += credit;
+    // Classify items
+    trialData.forEach(row => {
+        const name = row.ledger.toLowerCase();
+        if (["opening stock", "purchases", "wages", "carriage inwards", "sales returns"].some(k => name.includes(k))) {
+            tradingItems.push(row);
+            totalDebitTrading += row.debit;
+        } else if (["sales", "purchase returns"].some(k => name.includes(k))) {
+            tradingItems.push(row);
+            totalCreditTrading += row.credit;
         } else {
-            pnlRows += `<tr><td>${ledger}</td><td>${debit}</td><td>${credit}</td></tr>`;
-            pnlDebit += debit;
-            pnlCredit += credit;
+            pnlItems.push(row);
+            totalDebitPnL += row.debit;
+            totalCreditPnL += row.credit;
         }
     });
 
-    // Add Closing Stock
-    if (closingStock) {
-        tradingRows += `<tr><td>Closing Stock</td><td></td><td>${closingStock}</td></tr>`;
-        tradingCredit += closingStock;
+    // Calculate gross profit/loss
+    const grossResult = totalCreditTrading - totalDebitTrading;
+    if (grossResult > 0) {
+        pnlItems.unshift({ ledger: "Gross Profit c/d", debit: 0, credit: grossResult });
+        totalCreditPnL += grossResult;
+    } else {
+        pnlItems.unshift({ ledger: "Gross Loss c/d", debit: Math.abs(grossResult), credit: 0 });
+        totalDebitPnL += Math.abs(grossResult);
     }
 
-    // Calculate Gross Profit or Loss
-    let grossProfit = 0, grossLoss = 0;
-    if (tradingCredit > tradingDebit) {
-        grossProfit = tradingCredit - tradingDebit;
-        tradingRows += `<tr><td><strong>Gross Profit c/d</strong></td><td>${grossProfit}</td><td></td></tr>`;
-        tradingDebit += grossProfit;
-        pnlRows = `<tr><td><strong>Gross Profit b/d</strong></td><td></td><td>${grossProfit}</td></tr>` + pnlRows;
-        pnlCredit += grossProfit;
-    } else if (tradingDebit > tradingCredit) {
-        grossLoss = tradingDebit - tradingCredit;
-        tradingRows += `<tr><td><strong>Gross Loss c/d</strong></td><td></td><td>${grossLoss}</td></tr>`;
-        tradingCredit += grossLoss;
-        pnlRows = `<tr><td><strong>Gross Loss b/d</strong></td><td>${grossLoss}</td><td></td></tr>` + pnlRows;
-        pnlDebit += grossLoss;
-    }
+    // Render Trading Table
+    let tradingHTML = `<tr><th>Particulars</th><th>Debit</th><th>Credit</th></tr>`;
+    tradingItems.forEach(row => {
+        tradingHTML += `<tr><td>${row.ledger}</td><td>${row.debit || ""}</td><td>${row.credit || ""}</td></tr>`;
+    });
+    tradingHTML += `<tr><td>Closing Stock</td><td></td><td>${closingStock}</td></tr>`;
+    tradingHTML += `<tr><td><strong>Total</strong></td><td><strong>${totalDebitTrading}</strong></td><td><strong>${totalCreditTrading}</strong></td></tr>`;
+    document.getElementById('tradingTable').innerHTML = tradingHTML;
 
-    // Calculate Net Profit or Loss
-    let netProfit = 0, netLoss = 0;
-    if (pnlCredit > pnlDebit) {
-        netProfit = pnlCredit - pnlDebit;
-        pnlRows += `<tr><td><strong>Net Profit</strong></td><td>${netProfit}</td><td></td></tr>`;
-        pnlDebit += netProfit;
-    } else if (pnlDebit > pnlCredit) {
-        netLoss = pnlDebit - pnlCredit;
-        pnlRows += `<tr><td><strong>Net Loss</strong></td><td></td><td>${netLoss}</td></tr>`;
-        pnlCredit += netLoss;
-    }
-
-    // Render Tables
-    tradingTable.innerHTML = `
-        <tr><th>Ledger</th><th>Debit</th><th>Credit</th></tr>
-        ${tradingRows}
-        <tr><td><strong>Total</strong></td><td><strong>${tradingDebit}</strong></td><td><strong>${tradingCredit}</strong></td></tr>
-    `;
-
-    pnlTable.innerHTML = `
-        <tr><th>Ledger</th><th>Debit</th><th>Credit</th></tr>
-        ${pnlRows}
-        <tr><td><strong>Total</strong></td><td><strong>${pnlDebit}</strong></td><td><strong>${pnlCredit}</strong></td></tr>
-    `;
+    // Render P&L Table
+    let pnlHTML = `<tr><th>Particulars</th><th>Debit</th><th>Credit</th></tr>`;
+    pnlItems.forEach(row => {
+        pnlHTML += `<tr><td>${row.ledger}</td><td>${row.debit || ""}</td><td>${row.credit || ""}</td></tr>`;
+    });
+    pnlHTML += `<tr><td><strong>Total</strong></td><td><strong>${totalDebitPnL}</strong></td><td><strong>${totalCreditPnL}</strong></td></tr>`;
+    document.getElementById('pnlTable').innerHTML = pnlHTML;
 }
