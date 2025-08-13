@@ -1,34 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Trading & P&L Generator</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>FinMatrix</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Trading & Profit & Loss Statement Generator</h1>
+    <header>
+        <h1>Trading & Profit & Loss Statement Generator</h1>
+    </header>
 
-  <input type="file" id="csvFile" accept=".csv">
-  <label>Closing Stock: <input type="number" id="closingStock"></label>
-  <button id="addRow">Add Row</button>
-  <button id="generate">Generate Statements</button>
+    <main>
+        <section class="input-section">
+            <label for="csvFile">Upload Trial Balance (CSV): </label>
+            <input type="file" id="csvFile" accept=".csv">
+            <label for="closingStock">Closing Stock: </label>
+            <input type="number" id="closingStock" placeholder="Enter value">
+        </section>
 
-  <h2>Trial Balance</h2>
-  <table border="1">
-    <thead>
-      <tr>
-        <th>Ledger</th><th>Debit</th><th>Credit</th><th>Action</th>
-      </tr>
-    </thead>
-    <tbody id="trialBody"></tbody>
-  </table>
+        <section>
+            <h2>Trial Balance</h2>
+            <table id="trialTable">
+                <thead>
+                    <tr>
+                        <th>Ledger</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                    </tr>
+                </thead>
+                <tbody id="trialBody"></tbody>
+            </table>
+        </section>
 
-  <h2>Trading Account</h2>
-  <table id="tradingTable" border="1"></table>
+        <section>
+            <h2>Trading Account</h2>
+            <table id="tradingTable"></table>
+        </section>
 
-  <h2>Profit & Loss Account</h2>
-  <table id="pnlTable" border="1"></table>
+        <section>
+            <h2>Profit & Loss Account</h2>
+            <table id="pnlTable"></table>
+        </section>
+    </main>
 
-  <script src="app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
