@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Trading & P&L Flowchart</title>
+<style>
+  body {
+    margin: 0;
+    background: #1e1e1e;
+    color: #fff;
+    font-family: sans-serif;
+    padding: 20px;
+  }
+  header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .mermaid {
+    background: #1e1e1e;
+    border-radius: 10px;
+    padding: 20px;
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Trading & Profit & Loss Statement — Flowchart</h1>
+  </header>
+
+  <div class="mermaid">
+    flowchart LR
+      %% --- User Interface Group ---
+      subgraph UI[USER INTERFACE]
+        direction TB
+        A1([Click Download PDF]):::green
+        A2([Upload Trial Balance CSV]):::blue
+        A3([Click Generate Statements]):::green
+        A4([Enter Closing Stock Value]):::brown
+        A5([Download Sample CSV]):::grey
+      end
+
+      %% --- Processing Group ---
+      subgraph PROC[PROCESSING]
+        direction LR
+        B1([Parse and Validate CSV]):::blue
+        B2([Classify Ledgers]):::brown
+        B3([Calculate Trading Account]):::cyan
+        B4([Calculate Profit and Loss Account]):::cyan
+        B5([Check Trial Balance]):::green
+      end
+
+      %% --- Output Group ---
+      subgraph OUT[OUTPUT]
+        direction TB
+        C1([Download PDF File]):::green
+        C2([Display Trial Balance Table]):::blue
+        C3([Display Trading Account]):::cyan
+        C4([Display Profit and Loss Account]):::cyan
+        C5([Display Summary Tags]):::brown
+      end
+
+      %% Start/End
+      START([Start]):::start
+      END([End]):::end
+
+      %% Connections
+      START --> A1
+      START --> A2
+      START --> A3
+      START --> A4
+      START --> A5
+
+      A2 --> B1
+      A3 --> B1
+      A4 --> B1
+
+      B1 --> B2 --> B3 --> B4 --> B5
+
+      B5 --> C1
+      B5 --> C2
+      B5 --> C3
+      B5 --> C4
+      B5 --> C5
+
+      C1 --> END
+      C2 --> END
+      C3 --> END
+      C4 --> END
+      C5 --> END
+
+      %% Styles
+      classDef start fill:#0284c7,stroke:#fff,stroke-width:1px,color:#fff;
+      classDef end fill:#16a34a,stroke:#fff,stroke-width:1px,color:#fff;
+      classDef green fill:#16a34a,stroke:#fff,stroke-width:1px,color:#fff;
+      classDef blue fill:#1d4ed8,stroke:#fff,stroke-width:1px,color:#fff;
+      classDef cyan fill:#06b6d4,stroke:#fff,stroke-width:1px,color:#fff;
+      classDef brown fill:#b45309,stroke:#fff,stroke-width:1px,color:#fff;
+      classDef grey fill:#6b7280,stroke:#fff,stroke-width:1px,color:#fff;
+  </div>
+
+  <!-- Mermaid.js -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: "dark" });
+  </script>
+</body>
+</html>
