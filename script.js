@@ -96,3 +96,23 @@ function generateStatements() {
     pnlHTML += `<tr><td><strong>Total</strong></td><td><strong>${totalDebitPnL}</strong></td><td><strong>${totalCreditPnL}</strong></td></tr>`;
     document.getElementById('pnlTable').innerHTML = pnlHTML;
 }
+document.getElementById('downloadPdf').addEventListener('click', downloadPDF);
+
+function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFontSize(16);
+    doc.text("Trading & Profit & Loss Statement", 14, 15);
+
+    doc.setFontSize(12);
+    doc.text("Trading Account", 14, 25);
+    doc.autoTable({ html: '#tradingTable', startY: 30 });
+
+    let finalY = doc.lastAutoTable.finalY + 10;
+    doc.text("Profit & Loss Account", 14, finalY);
+    doc.autoTable({ html: '#pnlTable', startY: finalY + 5 });
+
+    doc.save('Trading_PnL_Statements.pdf');
+}
+
