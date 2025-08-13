@@ -17,21 +17,23 @@
   <main class="container">
     <!-- Step 1: Input -->
     <section class="card">
-      <h2>1) Load Trial Balance</h2>
-      <div class="row">
-        <div>
-          <label class="file-label">
-            <input id="csvFile" type="file" accept=".csv" />
-            <span>Upload CSV</span>
-          </label>
-          <button id="downloadSample" class="ghost">Download sample CSV</button>
-        </div>
-        <div class="sep">or</div>
-        <div>
-          <button id="addRow" class="outline">Add Row</button>
-          <button id="clearAll" class="danger">Clear All</button>
-        </div>
-      </div>
+      <!-- Step 1: Input -->
+<section class="card">
+  <h2>1) Load Trial Balance</h2>
+  <div class="row">
+    <div>
+      <label class="file-label">
+        <input id="csvFile" type="file" accept=".csv" />
+        <span>Upload CSV</span>
+      </label>
+      <button id="downloadSample" class="ghost">Download sample CSV</button>
+    </div>
+    <div class="sep">or</div>
+    <div>
+      <button id="addRow" class="outline">Add Row</button>
+      <button id="clearAll" class="danger">Clear All</button>
+    </div>
+  </div>
       <p class="hint">
         CSV format: <code>Ledger,Debit,Credit</code> (numbers only in Debit/Credit). Example: <code>Sales,,250000</code>
       </p>
@@ -113,4 +115,5 @@
   <script src="app.js"></script>
 </body>
 </html>
+
 
