@@ -1,107 +1,140 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Trading & P&L Flowchart</title>
 <style>
-  body {
-    margin: 0;
-    background: #1e1e1e;
-    color: #fff;
-    font-family: sans-serif;
-    padding: 20px;
-  }
-  header {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .mermaid {
-    background: #1e1e1e;
-    border-radius: 10px;
-    padding: 20px;
-  }
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: #f7faff;
+        text-align: center;
+        padding: 30px;
+    }
+    h1 {
+        color: #2c3e50;
+        margin-bottom: 30px;
+    }
+    .flowchart {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        position: relative;
+        max-width: 1200px;
+        margin: auto;
+    }
+    .stage {
+        background: #4CAF50;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        min-width: 180px;
+        text-align: center;
+        transition: transform 0.2s ease;
+    }
+    .stage:hover {
+        transform: scale(1.05);
+        background: #45a049;
+    }
+    .arrow {
+        width: 50px;
+        height: 2px;
+        background: #333;
+        align-self: center;
+    }
+    .tooltip {
+        display: none;
+        position: absolute;
+        background: white;
+        color: #333;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        max-width: 350px;
+        text-align: left;
+        z-index: 10;
+    }
+    .tooltip h3 {
+        margin-top: 0;
+        color: #4CAF50;
+    }
+    @media(max-width: 768px) {
+        .flowchart {
+            flex-direction: column;
+            align-items: center;
+        }
+        .arrow {
+            width: 2px;
+            height: 30px;
+        }
+    }
 </style>
 </head>
 <body>
-  <header>
-    <h1>Trading & Profit & Loss Statement — Flowchart</h1>
-  </header>
 
-  <div class="mermaid">
-flowchart LR
-  %% --- User Interface Group ---
-  subgraph UI[USER INTERFACE]
-    direction TB
-    A1([Click Download PDF]):::green
-    A2([Upload Trial Balance CSV]):::blue
-    A3([Click Generate Statements]):::green
-    A4([Enter Closing Stock Value]):::brown
-    A5([Download Sample CSV]):::grey
-  end
+<h1>Trading & P&amp;L Flowchart</h1>
 
-  %% --- Processing Group ---
-  subgraph PROC[PROCESSING]
-    direction LR
-    B1([Parse and Validate CSV]):::blue
-    B2([Classify Ledgers]):::brown
-    B3([Calculate Trading Account]):::cyan
-    B4([Calculate Profit and Loss Account]):::cyan
-    B5([Check Trial Balance]):::green
-  end
+<div class="flowchart">
+    <!-- Start -->
+    <div class="stage" data-title="Start" data-info="The process begins here." data-code="System is ready to accept user actions.">Start</div>
+    <div class="arrow"></div>
 
-  %% --- Output Group ---
-  subgraph OUT[OUTPUT]
-    direction TB
-    C1([Download PDF File]):::green
-    C2([Display Trial Balance Table]):::blue
-    C3([Display Trading Account]):::cyan
-    C4([Display Profit and Loss Account]):::cyan
-    C5([Display Summary Tags]):::brown
-  end
+    <!-- User Interface -->
+    <div class="stage" data-title="Click Download PDF" data-info="Downloads a blank PDF template or previous report." data-code="Triggers PDF file download from server.">Click Download PDF</div>
+    <div class="stage" data-title="Upload Trial Balance CSV" data-info="Uploads the CSV file containing trial balance data." data-code="Reads CSV and stores data for processing.">Upload Trial Balance CSV</div>
+    <div class="stage" data-title="Click Generate Statements" data-info="Generates financial statements based on uploaded CSV." data-code="Calls backend API to parse and process data.">Click Generate Statements</div>
+    <div class="stage" data-title="Enter Closing Stock Value" data-info="Manually enters the closing stock value for trading account calculation." data-code="User inputs numeric value stored in variables.">Enter Closing Stock Value</div>
+    <div class="stage" data-title="Download Sample CSV" data-info="Provides a sample CSV format for reference." data-code="Downloads pre-filled sample CSV from server.">Download Sample CSV</div>
+    <div class="arrow"></div>
 
-  %% Start/End
-  START([Start]):::start
-  END([End]):::end
+    <!-- Processing -->
+    <div class="stage" data-title="Parse and Validate CSV" data-info="Reads CSV content and checks format validity." data-code="Ensures columns match required structure before proceeding.">Parse and Validate CSV</div>
+    <div class="stage" data-title="Classify Ledgers" data-info="Sorts trial balance data into categories." data-code="Groups data into assets, liabilities, expenses, income.">Classify Ledgers</div>
+    <div class="stage" data-title="Calculate Trading Account" data-info="Computes gross profit or loss." data-code="Uses sales, purchases, and closing stock values.">Calculate Trading Account</div>
+    <div class="stage" data-title="Calculate Profit and Loss Account" data-info="Determines net profit or loss." data-code="Subtracts expenses from gross profit, adds other income.">Calculate Profit and Loss Account</div>
+    <div class="stage" data-title="Check Trial Balance" data-info="Ensures total debit equals total credit." data-code="Verifies accounting balance before final output.">Check Trial Balance</div>
+    <div class="arrow"></div>
 
-  %% Connections
-  START --> A1
-  START --> A2
-  START --> A3
-  START --> A4
-  START --> A5
+    <!-- Output -->
+    <div class="stage" data-title="Download PDF File" data-info="Downloads the generated financial statement." data-code="Creates PDF from processed data and sends to browser.">Download PDF File</div>
+    <div class="stage" data-title="Display Trial Balance Table" data-info="Shows the trial balance in table format." data-code="Renders HTML table from CSV data.">Display Trial Balance Table</div>
+    <div class="stage" data-title="Display Trading Account" data-info="Displays trading account statement." data-code="HTML table showing gross profit/loss.">Display Trading Account</div>
+    <div class="stage" data-title="Display Profit and Loss Account" data-info="Displays P&L account statement." data-code="HTML table showing net profit/loss.">Display Profit and Loss Account</div>
+    <div class="stage" data-title="Display Summary Tags" data-info="Shows summary values and tags for quick reference." data-code="Highlights key financial metrics.">Display Summary Tags</div>
+    <div class="arrow"></div>
 
-  A2 --> B1
-  A3 --> B1
-  A4 --> B1
+    <!-- End -->
+    <div class="stage" data-title="End" data-info="The process finishes here." data-code="User has downloaded/viewed all necessary statements.">End</div>
+</div>
 
-  B1 --> B2 --> B3 --> B4 --> B5
+<div class="tooltip" id="tooltip"></div>
 
-  B5 --> C1
-  B5 --> C2
-  B5 --> C3
-  B5 --> C4
-  B5 --> C5
+<script>
+    const stages = document.querySelectorAll(".stage");
+    const tooltip = document.getElementById("tooltip");
 
-  C1 --> END
-  C2 --> END
-  C3 --> END
-  C4 --> END
-  C5 --> END
+    stages.forEach(stage => {
+        stage.addEventListener("click", (e) => {
+            tooltip.innerHTML = `
+                <h3>${stage.getAttribute("data-title")}</h3>
+                <p><strong>Meaning:</strong> ${stage.getAttribute("data-info")}</p>
+                <p><strong>In Code:</strong> ${stage.getAttribute("data-code")}</p>
+            `;
+            tooltip.style.display = "block";
+            tooltip.style.top = e.pageY + 10 + "px";
+            tooltip.style.left = e.pageX + 10 + "px";
+        });
+    });
 
-  %% Styles
-  classDef start fill:#0284c7,stroke:#fff,stroke-width:1px,color:#fff;
-  classDef end fill:#16a34a,stroke:#fff,stroke-width:1px,color:#fff;
-  classDef green fill:#16a34a,stroke:#fff,stroke-width:1px,color:#fff;
-  classDef blue fill:#1d4ed8,stroke:#fff,stroke-width:1px,color:#fff;
-  classDef cyan fill:#06b6d4,stroke:#fff,stroke-width:1px,color:#fff;
-  classDef brown fill:#b45309,stroke:#fff,stroke-width:1px,color:#fff;
-  classDef grey fill:#6b7280,stroke:#fff,stroke-width:1px,color:#fff;
-  </div>
+    document.addEventListener("click", (e) => {
+        if (!e.target.classList.contains("stage")) {
+            tooltip.style.display = "none";
+        }
+    });
+</script>
 
-  <!-- Mermaid.js -->
-  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-  <script>
-    mermaid.initialize({ startOnLoad: true, theme: "dark" });
-  </script>
 </body>
 </html>
