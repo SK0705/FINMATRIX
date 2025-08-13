@@ -1,72 +1,152 @@
-:root {
-  --bg: #0b1020;
-  --card: #121833;
-  --muted: #8aa0ff;
-  --text: #ecf0ff;
-  --ok: #47d18c;
-  --warn: #ffd166;
-  --bad: #ff6b6b;
-  --line: #2a3158;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trading & P&L Flowchart</title>
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: #f7faff;
+        text-align: center;
+        padding: 30px;
+    }
+    h1 {
+        color: #2c3e50;
+        margin-bottom: 30px;
+    }
+    .flowchart {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        position: relative;
+        max-width: 1200px;
+        margin: auto;
+    }
+    .stage {
+        color: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        min-width: 180px;
+        text-align: center;
+        transition: transform 0.2s ease;
+    }
+    .stage:hover {
+        transform: scale(1.05);
+    }
+    /* Colors for categories */
+    .start-end { background: #2ecc71; }
+    .start-end:hover { background: #27ae60; }
 
-* { box-sizing: border-box; }
-html, body { margin:0; padding:0; background: var(--bg); color: var(--text); font: 15px/1.5 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+    .ui { background: #2980b9; }
+    .ui:hover { background: #2471a3; }
 
-.topbar { padding: 24px 16px; text-align: center; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #0f1633, #0b1020); }
-.topbar h1 { margin: 0 0 6px; font-size: 26px; letter-spacing: .3px; }
-.subtitle { margin: 0; color: #c6d0ff; opacity: .85; }
+    .processing { background: #8e44ad; }
+    .processing:hover { background: #7d3c98; }
 
-.container { max-width: 1200px; margin: 20px auto; padding: 0 14px; }
+    .output { background: #c0392b; }
+    .output:hover { background: #a93226; }
 
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin-bottom: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+    .arrow {
+        width: 50px;
+        height: 2px;
+        background: #333;
+        align-self: center;
+    }
+    .tooltip {
+        display: none;
+        position: absolute;
+        background: white;
+        color: #333;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        max-width: 350px;
+        text-align: left;
+        z-index: 10;
+    }
+    .tooltip h3 {
+        margin-top: 0;
+        color: #4CAF50;
+    }
+    @media(max-width: 768px) {
+        .flowchart {
+            flex-direction: column;
+            align-items: center;
+        }
+        .arrow {
+            width: 2px;
+            height: 30px;
+        }
+    }
+</style>
+</head>
+<body>
 
-.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+<h1>Trading & P&amp;L Flowchart</h1>
 
-.row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.sep { opacity: .6; }
-.hint { margin: 8px 0 0; color: #c6d0ff; opacity: .8; }
+<div class="flowchart">
+    <!-- Start -->
+    <div class="stage start-end" data-title="Start" data-info="The process begins here." data-code="System is ready to accept user actions.">Start</div>
+    <div class="arrow"></div>
 
-.file-label { position: relative; display: inline-block; }
-.file-label input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; }
-.file-label span { display:inline-block; background:#1b2450; border:1px dashed #4250a8; color:var(--muted); padding:10px 14px; border-radius:10px; cursor:pointer; }
+    <!-- User Interface -->
+    <div class="stage ui" data-title="Click Download PDF" data-info="Downloads a blank PDF template or previous report." data-code="Triggers PDF file download from server.">Click Download PDF</div>
+    <div class="stage ui" data-title="Upload Trial Balance CSV" data-info="Uploads the CSV file containing trial balance data." data-code="Reads CSV and stores data for processing.">Upload Trial Balance CSV</div>
+    <div class="stage ui" data-title="Click Generate Statements" data-info="Generates financial statements based on uploaded CSV." data-code="Calls backend API to parse and process data.">Click Generate Statements</div>
+    <div class="stage ui" data-title="Enter Closing Stock Value" data-info="Manually enters the closing stock value for trading account calculation." data-code="User inputs numeric value stored in variables.">Enter Closing Stock Value</div>
+    <div class="stage ui" data-title="Download Sample CSV" data-info="Provides a sample CSV format for reference." data-code="Downloads pre-filled sample CSV from server.">Download Sample CSV</div>
+    <div class="arrow"></div>
 
-button { background:#1e2655; border:1px solid #3a4596; color:#dee5ff; padding:10px 12px; border-radius:10px; cursor:pointer; }
-button:hover { filter:brightness(1.1); }
-button.primary { background:#2c38a6; border-color:#5d6bff; }
-button.ghost { background:transparent; border-color:#3a4596; }
-button.outline { background:#0f1538; border-color:#3a4596; }
-button.danger { background:#3a0f20; border-color:#8c354f; }
+    <!-- Processing -->
+    <div class="stage processing" data-title="Parse and Validate CSV" data-info="Reads CSV content and checks format validity." data-code="Ensures columns match required structure before proceeding.">Parse and Validate CSV</div>
+    <div class="stage processing" data-title="Classify Ledgers" data-info="Sorts trial balance data into categories." data-code="Groups data into assets, liabilities, expenses, income.">Classify Ledgers</div>
+    <div class="stage processing" data-title="Calculate Trading Account" data-info="Computes gross profit or loss." data-code="Uses sales, purchases, and closing stock values.">Calculate Trading Account</div>
+    <div class="stage processing" data-title="Calculate Profit and Loss Account" data-info="Determines net profit or loss." data-code="Subtracts expenses from gross profit, adds other income.">Calculate Profit and Loss Account</div>
+    <div class="stage processing" data-title="Check Trial Balance" data-info="Ensures total debit equals total credit." data-code="Verifies accounting balance before final output.">Check Trial Balance</div>
+    <div class="arrow"></div>
 
-.table-wrap { overflow:auto; border-radius: 12px; border: 1px solid var(--line); margin-top: 10px; }
-table { width:100%; border-collapse: collapse; }
-thead th { position: sticky; top:0; background:#141b3d; z-index:1; }
-th, td { padding:10px 8px; border-bottom:1px solid var(--line); }
-td.right, th.right { text-align: right; }
-.bold { font-weight: 700; }
-input[type=text], input[type=number], select {
-  background:#0f1538; border:1px solid #3a4596; color:#e6e9ff; padding:8px 10px; border-radius:8px; width:100%;
-}
+    <!-- Output -->
+    <div class="stage output" data-title="Download PDF File" data-info="Downloads the generated financial statement." data-code="Creates PDF from processed data and sends to browser.">Download PDF File</div>
+    <div class="stage output" data-title="Display Trial Balance Table" data-info="Shows the trial balance in table format." data-code="Renders HTML table from CSV data.">Display Trial Balance Table</div>
+    <div class="stage output" data-title="Display Trading Account" data-info="Displays trading account statement." data-code="HTML table showing gross profit/loss.">Display Trading Account</div>
+    <div class="stage output" data-title="Display Profit and Loss Account" data-info="Displays P&L account statement." data-code="HTML table showing net profit/loss.">Display Profit and Loss Account</div>
+    <div class="stage output" data-title="Display Summary Tags" data-info="Shows summary values and tags for quick reference." data-code="Highlights key financial metrics.">Display Summary Tags</div>
+    <div class="arrow"></div>
 
-td.actions { text-align:center; }
-.actions button { padding:6px 10px; }
+    <!-- End -->
+    <div class="stage start-end" data-title="End" data-info="The process finishes here." data-code="User has downloaded/viewed all necessary statements.">End</div>
+</div>
 
-.controls { display:flex; gap:10px; align-items:center; flex-wrap: wrap; }
-.controls label { display:flex; gap:8px; align-items:center; background:#0f1538; border:1px solid #3a4596; padding:8px 10px; border-radius:10px; }
-.controls .grow { flex:1 1 auto; }
-.controls input[type=text], .controls input[type=number] { width: 160px; }
+<div class="tooltip" id="tooltip"></div>
 
-.two-col-statement { display:grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.statement-col { border:1px solid var(--line); border-radius:12px; overflow:hidden; }
-.statement-col h3 { margin:0; background:#141b3d; padding:10px; border-bottom: 1px solid var(--line); }
-.statement-col table { width:100%; border-collapse: collapse; }
-.statement-col td, .statement-col th { padding:8px 8px; border-bottom:1px dashed #2a3158; }
-.statement-col tfoot td { border-top:1px solid var(--line); font-weight:700; }
+<script>
+    const stages = document.querySelectorAll(".stage");
+    const tooltip = document.getElementById("tooltip");
 
-.footer { text-align:center; padding: 20px; color:#97a0d9; }
+    stages.forEach(stage => {
+        stage.addEventListener("click", (e) => {
+            tooltip.innerHTML = `
+                <h3>${stage.getAttribute("data-title")}</h3>
+                <p><strong>Meaning:</strong> ${stage.getAttribute("data-info")}</p>
+                <p><strong>In Code:</strong> ${stage.getAttribute("data-code")}</p>
+            `;
+            tooltip.style.display = "block";
+            tooltip.style.top = e.pageY + 10 + "px";
+            tooltip.style.left = e.pageX + 10 + "px";
+        });
+    });
 
-.bad { color: var(--bad); }
-.ok { color: var(--ok); }
-.warn { color: var(--warn); }
+    document.addEventListener("click", (e) => {
+        if (!e.target.classList.contains("stage")) {
+            tooltip.style.display = "none";
+        }
+    });
+</script>
 
-.summary { display: grid; gap: 6px; }
-.tag { display:inline-block; padding:4px 8px; border-radius:999px; background:#0f1538; border:1px solid #3a4596; color:#cbd4ff; }
+</body>
+</html>
+
