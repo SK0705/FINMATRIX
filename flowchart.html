@@ -1,151 +1,485 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FinMatrix</title>
-<style>
-    body {
-        font-family: 'Segoe UI', sans-serif;
-        background: #f7faff;
-        text-align: center;
-        padding: 30px;
-    }
-    h1 {
-        color: #2c3e50;
-        margin-bottom: 30px;
-    }
-    .flowchart {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px;
-        position: relative;
-        max-width: 1200px;
-        margin: auto;
-    }
-    .stage {
-        color: white;
-        padding: 15px 20px;
-        border-radius: 10px;
-        cursor: pointer;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-        min-width: 180px;
-        text-align: center;
-        transition: transform 0.2s ease;
-    }
-    .stage:hover {
-        transform: scale(1.05);
-    }
-    /* Colors for categories */
-    .start-end { background: #2ecc71; }
-    .start-end:hover { background: #27ae60; }
-
-    .ui { background: #2980b9; }
-    .ui:hover { background: #2471a3; }
-
-    .processing { background: #8e44ad; }
-    .processing:hover { background: #7d3c98; }
-
-    .output { background: #c0392b; }
-    .output:hover { background: #a93226; }
-
-    .arrow {
-        width: 50px;
-        height: 2px;
-        background: #333;
-        align-self: center;
-    }
-    .tooltip {
-        display: none;
-        position: absolute;
-        background: white;
-        color: #333;
-        padding: 15px;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        max-width: 350px;
-        text-align: left;
-        z-index: 10;
-    }
-    .tooltip h3 {
-        margin-top: 0;
-        color: #4CAF50;
-    }
-    @media(max-width: 768px) {
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading & P&L Flowchart | Financial Process Visualization</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #2ec4b6;
+            --danger: #f72585;
+            --warning: #ff9e00;
+            --info: #4cc9f0;
+            --dark: #212529;
+            --light: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
+            text-align: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: var(--secondary);
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--danger);
+            border-radius: 2px;
+        }
+        
+        .flow-description {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
         .flowchart {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            position: relative;
+            margin: 40px auto;
+        }
+        
+        .stage-group {
+            display: flex;
             flex-direction: column;
+            gap: 15px;
             align-items: center;
         }
-        .arrow {
-            width: 2px;
-            height: 30px;
+        
+        .stage {
+            color: white;
+            padding: 18px 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            min-width: 220px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            font-weight: 500;
+            border: none;
         }
-    }
-</style>
+        
+        .stage::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
+            z-index: 1;
+        }
+        
+        .stage:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+        }
+        
+        .stage span {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Colors for categories */
+        .start-end { 
+            background: linear-gradient(135deg, var(--success) 0%, #20c997 100%); 
+        }
+        
+        .ui { 
+            background: linear-gradient(135deg, var(--primary) 0%, #3a86ff 100%); 
+        }
+        
+        .processing { 
+            background: linear-gradient(135deg, #7209b7 0%, var(--secondary) 100%); 
+        }
+        
+        .output { 
+            background: linear-gradient(135deg, var(--danger) 0%, #b5179e 100%); 
+        }
+        
+        .arrow {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 24px;
+            transform: rotate(90deg);
+        }
+        
+        .tooltip {
+            display: none;
+            position: absolute;
+            background: white;
+            color: var(--dark);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            max-width: 400px;
+            text-align: left;
+            z-index: 100;
+            border-left: 5px solid var(--danger);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .tooltip h3 {
+            margin-top: 0;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .tooltip h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--warning);
+            border-radius: 3px;
+        }
+        
+        .tooltip p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .tooltip strong {
+            color: var(--secondary);
+        }
+        
+        .group-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .group-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (min-width: 992px) {
+            .arrow {
+                transform: rotate(0);
+            }
+            
+            .flowchart {
+                flex-wrap: nowrap;
+                align-items: center;
+            }
+            
+            .stage-group {
+                gap: 25px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .stage {
+                min-width: 200px;
+                padding: 15px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h1>Trading & P&L Flowchart</h1>
+        <p class="flow-description">Interactive visualization of the financial statement generation process from trial balance to final reports.</p>
+        
+        <div class="flowchart">
+            <!-- Start Group -->
+            <div class="stage-group">
+                <div class="group-title">Initiation</div>
+                <div class="stage start-end" 
+                     data-title="Start Process" 
+                     data-info="The financial reporting workflow begins here, ready to accept user inputs and actions." 
+                     data-code="System initialization completes, UI components are loaded, and event listeners are activated.">
+                    <span>Start Process</span>
+                </div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <!-- User Interface Group -->
+            <div class="stage-group">
+                <div class="group-title">User Actions</div>
+                <div class="stage ui" 
+                     data-title="Download PDF Template" 
+                     data-info="Retrieves a blank PDF template or previous report for reference or editing." 
+                     data-code="PDF generation API call with template flag set to true, returns PDF as downloadable attachment.">
+                    <span>Download PDF Template</span>
+                </div>
+                
+                <div class="stage ui" 
+                     data-title="Upload Trial Balance" 
+                     data-info="User uploads CSV file containing trial balance data for processing." 
+                     data-code="FileReader API processes CSV, validates structure, and stores data in memory for calculations.">
+                    <span>Upload Trial Balance</span>
+                </div>
+                
+                <div class="stage ui" 
+                     data-title="Generate Statements" 
+                     data-info="Initiates financial statement generation based on the uploaded trial balance data." 
+                     data-code="Triggers backend processing pipeline with user data as input parameters.">
+                    <span>Generate Statements</span>
+                </div>
+                
+                <div class="stage ui" 
+                     data-title="Enter Closing Stock" 
+                     data-info="Manual input of closing stock valuation for accurate trading account calculation." 
+                     data-code="Input validation ensures numeric value, stored in state management for calculations.">
+                    <span>Enter Closing Stock</span>
+                </div>
+                
+                <div class="stage ui" 
+                     data-title="Download Sample CSV" 
+                     data-info="Provides reference CSV format to ensure proper data structure for upload." 
+                     data-code="Pre-formatted CSV file served from static assets with example ledger entries.">
+                    <span>Download Sample CSV</span>
+                </div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <!-- Processing Group -->
+            <div class="stage-group">
+                <div class="group-title">Data Processing</div>
+                <div class="stage processing" 
+                     data-title="Parse & Validate CSV" 
+                     data-info="System reads and validates CSV structure, checking for required columns and data types." 
+                     data-code="CSV parser checks header row, validates numeric values, and ensures debit/credit balance.">
+                    <span>Parse & Validate CSV</span>
+                </div>
+                
+                <div class="stage processing" 
+                     data-title="Classify Ledger Items" 
+                     data-info="Categorizes trial balance entries into assets, liabilities, income, and expenses." 
+                     data-code="Mapping algorithm uses account codes and naming patterns to classify each entry.">
+                    <span>Classify Ledger Items</span>
+                </div>
+                
+                <div class="stage processing" 
+                     data-title="Calculate Trading Account" 
+                     data-info="Computes gross profit/loss by comparing sales against cost of goods sold." 
+                     data-code="Formula: Gross Profit = Sales - (Opening Stock + Purchases - Closing Stock)">
+                    <span>Calculate Trading Account</span>
+                </div>
+                
+                <div class="stage processing" 
+                     data-title="Calculate P&L Account" 
+                     data-info="Determines net profit/loss by considering all incomes and expenses." 
+                     data-code="Net Profit = Gross Profit + Other Incomes - All Expenses">
+                    <span>Calculate P&L Account</span>
+                </div>
+                
+                <div class="stage processing" 
+                     data-title="Verify Trial Balance" 
+                     data-info="Final validation ensuring total debits equal total credits for accounting accuracy." 
+                     data-code="Debit/Credit summation comparison with tolerance threshold for rounding errors.">
+                    <span>Verify Trial Balance</span>
+                </div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <!-- Output Group -->
+            <div class="stage-group">
+                <div class="group-title">Results Output</div>
+                <div class="stage output" 
+                     data-title="Download Financial Statements" 
+                     data-info="Generates and delivers comprehensive PDF report with all financial statements." 
+                     data-code="PDFKit generates multi-page document with formatted tables, charts, and summary.">
+                    <span>Download Financial Statements</span>
+                </div>
+                
+                <div class="stage output" 
+                     data-title="View Trial Balance" 
+                     data-info="Interactive table display of the uploaded trial balance data with sorting." 
+                     data-code="React-table component renders paginated, sortable table with search functionality.">
+                    <span>View Trial Balance</span>
+                </div>
+                
+                <div class="stage output" 
+                     data-title="View Trading Account" 
+                     data-info="Detailed trading account showing gross profit calculation breakdown." 
+                     data-code="Dynamic HTML table with expandable sections for cost of goods sold details.">
+                    <span>View Trading Account</span>
+                </div>
+                
+                <div class="stage output" 
+                     data-title="View P&L Account" 
+                     data-info="Complete profit and loss statement with expense categorization." 
+                     data-code="Interactive chart visualization alongside tabular data with percentage breakdowns.">
+                    <span>View P&L Account</span>
+                </div>
+                
+                <div class="stage output" 
+                     data-title="Financial Summary" 
+                     data-info="Key metrics and highlights extracted from the financial statements." 
+                     data-code="Calculates and displays ratios like gross margin, net margin, and expense percentages.">
+                    <span>Financial Summary</span>
+                </div>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <!-- End Group -->
+            <div class="stage-group">
+                <div class="group-title">Completion</div>
+                <div class="stage start-end" 
+                     data-title="Process Complete" 
+                     data-info="All financial statements have been generated and are available to the user." 
+                     data-code="System logs completion event, resets necessary states, and awaits new user action.">
+                    <span>Process Complete</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<h1>Trading & P&amp;L Flowchart</h1>
+    <div class="tooltip" id="tooltip"></div>
 
-<div class="flowchart">
-    <!-- Start -->
-    <div class="stage start-end" data-title="Start" data-info="The process begins here." data-code="System is ready to accept user actions.">Start</div>
-    <div class="arrow"></div>
+    <script>
+        const stages = document.querySelectorAll(".stage");
+        const tooltip = document.getElementById("tooltip");
+        let activeStage = null;
 
-    <!-- User Interface -->
-    <div class="stage ui" data-title="Click Download PDF" data-info="Downloads a blank PDF template or previous report." data-code="Triggers PDF file download from server.">Click Download PDF</div>
-    <div class="stage ui" data-title="Upload Trial Balance CSV" data-info="Uploads the CSV file containing trial balance data." data-code="Reads CSV and stores data for processing.">Upload Trial Balance CSV</div>
-    <div class="stage ui" data-title="Click Generate Statements" data-info="Generates financial statements based on uploaded CSV." data-code="Calls backend API to parse and process data.">Click Generate Statements</div>
-    <div class="stage ui" data-title="Enter Closing Stock Value" data-info="Manually enters the closing stock value for trading account calculation." data-code="User inputs numeric value stored in variables.">Enter Closing Stock Value</div>
-    <div class="stage ui" data-title="Download Sample CSV" data-info="Provides a sample CSV format for reference." data-code="Downloads pre-filled sample CSV from server.">Download Sample CSV</div>
-    <div class="arrow"></div>
-
-    <!-- Processing -->
-    <div class="stage processing" data-title="Parse and Validate CSV" data-info="Reads CSV content and checks format validity." data-code="Ensures columns match required structure before proceeding.">Parse and Validate CSV</div>
-    <div class="stage processing" data-title="Classify Ledgers" data-info="Sorts trial balance data into categories." data-code="Groups data into assets, liabilities, expenses, income.">Classify Ledgers</div>
-    <div class="stage processing" data-title="Calculate Trading Account" data-info="Computes gross profit or loss." data-code="Uses sales, purchases, and closing stock values.">Calculate Trading Account</div>
-    <div class="stage processing" data-title="Calculate Profit and Loss Account" data-info="Determines net profit or loss." data-code="Subtracts expenses from gross profit, adds other income.">Calculate Profit and Loss Account</div>
-    <div class="stage processing" data-title="Check Trial Balance" data-info="Ensures total debit equals total credit." data-code="Verifies accounting balance before final output.">Check Trial Balance</div>
-    <div class="arrow"></div>
-
-    <!-- Output -->
-    <div class="stage output" data-title="Download PDF File" data-info="Downloads the generated financial statement." data-code="Creates PDF from processed data and sends to browser.">Download PDF File</div>
-    <div class="stage output" data-title="Display Trial Balance Table" data-info="Shows the trial balance in table format." data-code="Renders HTML table from CSV data.">Display Trial Balance Table</div>
-    <div class="stage output" data-title="Display Trading Account" data-info="Displays trading account statement." data-code="HTML table showing gross profit/loss.">Display Trading Account</div>
-    <div class="stage output" data-title="Display Profit and Loss Account" data-info="Displays P&L account statement." data-code="HTML table showing net profit/loss.">Display Profit and Loss Account</div>
-    <div class="stage output" data-title="Display Summary Tags" data-info="Shows summary values and tags for quick reference." data-code="Highlights key financial metrics.">Display Summary Tags</div>
-    <div class="arrow"></div>
-
-    <!-- End -->
-    <div class="stage start-end" data-title="End" data-info="The process finishes here." data-code="User has downloaded/viewed all necessary statements.">End</div>
-</div>
-
-<div class="tooltip" id="tooltip"></div>
-
-<script>
-    const stages = document.querySelectorAll(".stage");
-    const tooltip = document.getElementById("tooltip");
-
-    stages.forEach(stage => {
-        stage.addEventListener("click", (e) => {
-            tooltip.innerHTML = `
-                <h3>${stage.getAttribute("data-title")}</h3>
-                <p><strong>Meaning:</strong> ${stage.getAttribute("data-info")}</p>
-                <p><strong>In Code:</strong> ${stage.getAttribute("data-code")}</p>
-            `;
-            tooltip.style.display = "block";
-            tooltip.style.top = e.pageY + 10 + "px";
-            tooltip.style.left = e.pageX + 10 + "px";
+        stages.forEach(stage => {
+            // Click handler
+            stage.addEventListener("click", (e) => {
+                e.stopPropagation();
+                
+                // Remove active class from all stages
+                stages.forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked stage
+                stage.classList.add('active');
+                activeStage = stage;
+                
+                // Update tooltip content
+                tooltip.innerHTML = `
+                    <h3>${stage.getAttribute("data-title")}</h3>
+                    <p><strong>Business Logic:</strong> ${stage.getAttribute("data-info")}</p>
+                    <p><strong>Technical Implementation:</strong> ${stage.getAttribute("data-code")}</p>
+                `;
+                
+                // Position and show tooltip
+                tooltip.style.display = "block";
+                
+                // Position tooltip (avoid going off-screen)
+                const rect = stage.getBoundingClientRect();
+                let top = rect.bottom + window.scrollY + 10;
+                let left = rect.left + window.scrollX;
+                
+                // Adjust if too close to right edge
+                if (left + tooltip.offsetWidth > window.innerWidth) {
+                    left = window.innerWidth - tooltip.offsetWidth - 20;
+                }
+                
+                // Adjust if too close to bottom
+                if (top + tooltip.offsetHeight > window.innerHeight + window.scrollY) {
+                    top = rect.top + window.scrollY - tooltip.offsetHeight - 10;
+                }
+                
+                tooltip.style.top = `${top}px`;
+                tooltip.style.left = `${left}px`;
+            });
+            
+            // Hover effects
+            stage.addEventListener('mouseenter', () => {
+                if (!stage.classList.contains('active')) {
+                    stage.style.transform = 'translateY(-5px)';
+                    stage.style.boxShadow = '0 15px 25px rgba(0,0,0,0.15)';
+                }
+            });
+            
+            stage.addEventListener('mouseleave', () => {
+                if (!stage.classList.contains('active')) {
+                    stage.style.transform = '';
+                    stage.style.boxShadow = '';
+                }
+            });
         });
-    });
 
-    document.addEventListener("click", (e) => {
-        if (!e.target.classList.contains("stage")) {
-            tooltip.style.display = "none";
-        }
-    });
-</script>
-
+        // Click anywhere to close tooltip
+        document.addEventListener("click", (e) => {
+            if (!e.target.classList.contains("stage")) {
+                tooltip.style.display = "none";
+                if (activeStage) {
+                    activeStage.classList.remove('active');
+                    activeStage = null;
+                }
+            }
+        });
+        
+        // Close tooltip on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                tooltip.style.display = "none";
+                if (activeStage) {
+                    activeStage.classList.remove('active');
+                    activeStage = null;
+                }
+            }
+        });
+    </script>
 </body>
 </html>
