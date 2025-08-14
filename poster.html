@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinMatrix - Financial Analytics</title>
+    <style>
+        /* Modern CSS with gradient background and glassmorphism effect */
+        :root {
+            --primary: #2563eb;
+            --secondary: #059669;
+            --accent: #f59e0b;
+            --text: #f8fafc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e3a8a 0%, #065f46 100%);
+            padding: 2rem;
+        }
+        
+        .poster {
+            width: 100%;
+            max-width: 800px;
+            border-radius: 24px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .poster-content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            color: var(--text);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gradient-overlay {
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.15) 0%, transparent 70%);
+            z-index: 0;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            position: relative;
+            line-height: 1.2;
+            background: linear-gradient(90deg, var(--text) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .features {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            position: relative;
+            flex-wrap: wrap;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+            min-width: 200px;
+            flex: 1;
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+        
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-desc {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        .cta {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--accent) 0%, #ef4444 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            z-index: 1;
+            margin-top: 1rem;
+        }
+        
+        .cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -5px rgba(245, 158, 11, 0.4);
+        }
+        
+        .device-mockup {
+            position: absolute;
+            right: 3rem;
+            bottom: 3rem;
+            width: 300px;
+            opacity: 0.9;
+            z-index: 0;
+        }
+        
+        .url {
+            position: absolute;
+            bottom: 2rem;
+            left: 3rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            .poster-content {
+                padding: 2rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+            }
+            
+            .device-mockup {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="poster">
+        <div class="poster-content">
+            <div class="gradient-overlay"></div>
+            
+            <h1>Master Your Finances with FinMatrix</h1>
+            <p class="tagline">Track, Analyze, Optimize — All in One Dashboard</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Real-Time Tracking</div>
+                    <div class="feature-desc">Monitor expenses as they happen with automatic categorization</div>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">💰</div>
+                    <div class="feature-title">Smart Budgets</div>
+                    <div class="feature-desc">AI-powered suggestions to maximize your savings</div>
+                </div>
+                
+                <div class="feature">
+                    <div class="feature-icon">📈</div>
+                    <div class="feature-title">Interactive Dashboards</div>
+                    <div class="feature-desc">Customizable views of your financial health</div>
+                </div>
+            </div>
+            
+            <a href="https://finmatrix-rouge.vercel.app/" class="cta">Try Free Today</a>
+            
+            <div class="url">finmatrix-rouge.vercel.app</div>
+            
+            <!-- This would be replaced with an actual image in production -->
+            <div class="device-mockup">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="20" y="30" width="160" height="140" rx="15" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                    <rect x="30" y="40" width="140" height="120" rx="10" fill="rgba(0,0,0,0.3)"/>
+                    <line x1="90" y1="25" x2="110" y2="25" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+                    <path d="M30 60 Q50 55 70 60 T110 60 T150 60" stroke="var(--accent)" stroke-width="2" fill="none"/>
+                    <circle cx="50" cy="100" r="3" fill="var(--accent)"/>
+                    <circle cx="80" cy="100" r="3" fill="var(--primary)"/>
+                    <circle cx="110" cy="100" r="3" fill="var(--secondary)"/>
+                    <path d="M40 120 L60 140 L80 120 L100 140 L120 120 L140 140" stroke="rgba(255,255,255,0.7)" stroke-width="2" fill="none"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
