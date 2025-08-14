@@ -3,12 +3,13 @@
 <head>
     <title>FinMatrix - Financial Analytics</title>
     <style>
-        /* Modern CSS with gradient background and glassmorphism effect */
+        /* Modern CSS with updated color scheme */
         :root {
-            --primary: #2563eb;
-            --secondary: #059669;
-            --accent: #f59e0b;
-            --text: #f8fafc;
+            --primary: #6366f1;  /* Indigo-500 */
+            --secondary: #10b981;  /* Emerald-500 */
+            --accent: #f97316;  /* Orange-500 */
+            --text: #f8fafc;  /* Slate-50 */
+            --dark: #0f172a;  /* Slate-900 */
         }
         
         * {
@@ -23,7 +24,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #1e3a8a 0%, #065f46 100%);
+            background: linear-gradient(135deg, #4338ca 0%, #047857 100%);
             padding: 2rem;
         }
         
@@ -37,7 +38,7 @@
         }
         
         .poster-content {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(15, 23, 42, 0.7);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -53,7 +54,7 @@
             right: -50%;
             width: 100%;
             height: 200%;
-            background: radial-gradient(circle, rgba(251, 191, 36, 0.15) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, transparent 70%);
             z-index: 0;
         }
         
@@ -86,11 +87,17 @@
         }
         
         .feature {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             padding: 1.5rem;
             border-radius: 12px;
             min-width: 200px;
             flex: 1;
+            transition: transform 0.3s, background 0.3s;
+        }
+        
+        .feature:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
         }
         
         .feature-icon {
@@ -102,6 +109,7 @@
         .feature-title {
             font-weight: 600;
             margin-bottom: 0.5rem;
+            color: white;
         }
         
         .feature-desc {
@@ -111,7 +119,7 @@
         
         .cta {
             display: inline-block;
-            background: linear-gradient(90deg, var(--accent) 0%, #ef4444 100%);
+            background: linear-gradient(90deg, var(--accent) 0%, var(--primary) 100%);
             color: white;
             padding: 1rem 2rem;
             border-radius: 50px;
@@ -122,11 +130,13 @@
             position: relative;
             z-index: 1;
             margin-top: 1rem;
+            border: none;
+            cursor: pointer;
         }
         
         .cta:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px -5px rgba(245, 158, 11, 0.4);
+            box-shadow: 0 10px 20px -5px rgba(249, 115, 22, 0.5);
         }
         
         .device-mockup {
@@ -193,9 +203,9 @@
                 </div>
             </div>
             
-            <a href=>Try Free Today</a>
+            <a href="#" class="cta">Try Free Today</a>
             
-            <div class="url">finmatrix-rouge.vercel.app</div>
+            
             
             <!-- This would be replaced with an actual image in production -->
             <div class="device-mockup">
